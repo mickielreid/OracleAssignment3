@@ -1,6 +1,6 @@
 # Oracle Assignment 3
 
-**QUESRION 1:**
+**QUESTION 1:**
 
 *Q1. Returning a Record
 Create a procedure named DDPROJ_SP that retrieves project information for a specific project
@@ -57,7 +57,7 @@ end;
 
 
 
-**QUESTION 2 **
+**QUESTION 2**
 
 *Q2. Creating a Procedure
 Create a procedure named DD PAY_ SP that identifies whether a donor currently has an active
