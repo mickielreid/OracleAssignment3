@@ -1,14 +1,13 @@
-#Oracle Assignment 3
+# Oracle Assignment 3
 
-***QUESRION 1: ***
-RESULTS:
-CODE:
-Q1. Returning a Record
+**QUESRION 1:**
+
+*Q1. Returning a Record
 Create a procedure named DDPROJ_SP that retrieves project information for a specific project
 based on a project ID. The procedure should have two parameters: one to accept a project ID
 value and another to return all data for the specified project. Use a record variable to have the
 procedure return all database column values for the selected project. Test the procedure with an
-anonymous block.
+anonymous block.*
 ```
 create or replace procedure DDPROJ_SP  
     (
@@ -58,7 +57,7 @@ end;
 
 
 
-***QUESTION 2 ***
+**QUESTION 2 **
 
 *Q2. Creating a Procedure
 Create a procedure named DD PAY_ SP that identifies whether a donor currently has an active
@@ -66,8 +65,7 @@ pledge with monthly payments. A donor ID is the input to the procedure. Using th
 the procedure needs to determine whether the donor has any currently active pledges based on
 the status field and is on a monthly payment plan. If so, the procedure is to return the Boolean
 value TRUE. Otherwise, the value FALSE should be returned. Test the procedure with an
-anonymous block.
-*
+anonymous block.*
 
 CODE :
 ```
@@ -112,15 +110,15 @@ end;
 
 
 
-***QUESTION 3:***
+**QUESTION 3:**
 
 *Q3. Creating a Procedure
 Create a procedure named DDCKPAY_SP that confirms whether a monthly pledge payment is
 the correct amount. The procedure needs to accept two values as input: a payment amount and a
-pledge ID. Based on these inputs, the procedure should confirm that the payment is∑the correct
+pledge ID. Based on these inputs, the procedure should confirm that the payment is¬∑the correct
 monthly Increment amount, based on pledge data in the database. If It isn't, a custom Oracle error
-using error number 20050 and the message "Incorrect payment amount - planned payment =??î
-should be raised. The ì??î should be replaced by the correct payment amount.
+using error number 20050 and the message "Incorrect payment amount - planned payment =??‚Äù
+should be raised. The ‚Äú??‚Äù should be replaced by the correct payment amount.
 The database query in the procedure should be formulated so that no rows are returned if the
 pledge isn't on a monthly payment plan or the pledge isn't found. If the query returns no rows,
 the procedure should display the message "No payment Information."
@@ -173,7 +171,7 @@ END DDCKPAY_SP;
 
 
 
-***QUESTION 4:***
+**QUESTION 4:**
 
  *Q4. Creating a Procedure
 Create a procedure named DDCXBAL_SP that verifies pledge payment information. The
