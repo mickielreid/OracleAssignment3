@@ -9,50 +9,48 @@ value and another to return all data for the specified project. Use a record var
 procedure return all database column values for the selected project. Test the procedure with an
 anonymous block.*
 ```
-create or replace procedure DDPROJ_SP  
-    (
-        Pro_ID IN DD_PROJECT.IDPROJ%type,
-       d_project out DD_PROJECT%ROWTYPE
-    )
-    IS
-       
-      TYPE PRO IS RECORD(
-        IDPROJ DD_PROJECT.IDPROJ%TYPE,
-        PROJNAME DD_PROJECT.PROJNAME%TYPE,
-        PROJSTARTDATE  DD_PROJECT.PROJSTARTDATE%TYPE,
-        PROJENDDATE  DD_PROJECT.PROJENDDATE%TYPE,
-        PROJFUNDGOAL  DD_PROJECT.PROJFUNDGOAL%TYPE,
-        PROJCOORD  DD_PROJECT.PROJCOORD%TYPE);
-        D_PRO PRO;
-BEGIN 
-   
-    SELECT *
-    INTO d_project
-    FROM DD_PROJECT 
-    WHERE IDPROJ = Pro_ID;
-        
-END DDPROJ_SP ;     
+CREATE OR REPLACE PROCEDURE DDPROJ_SP(
+projectID IN DD_PROJECT.IDPROJ%type,
+projectResponse out DD_PROJECT%ROWTYPE)
+IS
+TYPE PRO IS RECORD
+(
+IDPROJ        DD_PROJECT.IDPROJ%TYPE,
+PROJNAME      DD_PROJECT.PROJNAME%TYPE,
+PROJSTARTDATE DD_PROJECT.PROJSTARTDATE%TYPE,
+PROJENDDATE   DD_PROJECT.PROJENDDATE%TYPE,
+PROJFUNDGOAL  DD_PROJECT.PROJFUNDGOAL%TYPE,
+PROJCOORD     DD_PROJECT.PROJCOORD%TYPE
+);
+BEGIN
+SELECT *
+INTO projectResponse
+FROM DD_PROJECT
+WHERE IDPROJ = projectID;
+END DDPROJ_SP ;
 
-declare 
-   -- d_project DD_PROJECT%ROWTYPE;
-     TYPE PRO IS RECORD(
-        IDPROJ DD_PROJECT.IDPROJ%TYPE,
-        PROJNAME DD_PROJECT.PROJNAME%TYPE,
-        PROJSTARTDATE  DD_PROJECT.PROJSTARTDATE%TYPE,
-        PROJENDDATE  DD_PROJECT.PROJENDDATE%TYPE,
-        PROJFUNDGOAL  DD_PROJECT.PROJFUNDGOAL%TYPE,
-        PROJCOORD  DD_PROJECT.PROJCOORD%TYPE);
-        d_project PRO;
-begin
+DECLARE
+projectIDInput NUMBER := 500;
+TYPE recordResponse IS RECORD
+(
+IDPROJ        DD_PROJECT.IDPROJ%TYPE,
+PROJNAME      DD_PROJECT.PROJNAME%TYPE,
+PROJSTARTDATE DD_PROJECT.PROJSTARTDATE%TYPE,
+PROJENDDATE   DD_PROJECT.PROJENDDATE%TYPE,
+PROJFUNDGOAL  DD_PROJECT.PROJFUNDGOAL%TYPE,
+PROJCOORD     DD_PROJECT.PROJCOORD%TYPE
+);
+d_project recordResponse;
+BEGIN
+DDPROJ_SP(projectIDInput, d_project);
 
-DDPROJ_SP(501 ,  d_project );
 DBMS_OUTPUT.PUT_LINE(d_project.IDPROJ);
 DBMS_OUTPUT.PUT_LINE(d_project.PROJNAME);
 DBMS_OUTPUT.PUT_LINE(d_project.PROJSTARTDATE);
 DBMS_OUTPUT.PUT_LINE(d_project.PROJENDDATE);
 DBMS_OUTPUT.PUT_LINE(d_project.PROJFUNDGOAL);
 DBMS_OUTPUT.PUT_LINE(d_project.PROJCOORD);
-end;
+END;
 ```
 
 
@@ -69,43 +67,37 @@ anonymous block.*
 
 CODE :
 ```
-create or replace procedure DDPAY_SP 
-    (
-        P_ID IN NUMBER,
-        P_RESP OUT boolean
-    )
-    IS
-       STATUS NUMBER;
-       MON_PAY NUMBER;
-BEGIN 
+CREATE OR REPLACE PROCEDURE DDPAY_SP(
+paymentID IN NUMBER,
+paymentResponse OUT boolean)
+IS
+paymentStatus  NUMBER;
+monthlyPayment NUMBER;
+BEGIN
+SELECT IDSTATUS, PAYMONTHS
+INTO paymentStatus, monthlyPayment
+FROM DD_PLEDGE
+WHERE IDPLEDGE = paymentID;
 
-    SELECT IDSTATUS, PAYMONTHS
-    INTO STATUS, MON_PAY
-    FROM DD_PLEDGE 
-    WHERE IDPLEDGE = P_ID;
+if paymentStatus = 20 And monthlyPayment = 0 THEN
+paymentResponse := FALSE ;
+ELSIF paymentStatus = 10 AND monthlyPayment > 0 THEN
+paymentResponse := TRUE;
+END IF;
+END DDPAY_SP;
 
-        
-        if STATUS != 10 And MON_PAY > 1 THEN
-           P_RESP := FALSE ;
-       ELSIF STATUS = 10 AND MON_PAY > 0 THEN
-           P_RESP := TRUE;
-        END IF; 
-        
-END DDPAY_SP;     
-
-declare 
-    P_ID DD_PLEDGE.IDPLEDGE%type := 105;
-    P_RESP Boolean;
-begin
-DDPAY_SP(P_ID, P_RESP) ;
+DECLARE
+paymentID       DD_PLEDGE.IDPLEDGE%type := 106;
+paymentResponse Boolean;
+BEGIN
+DDPAY_SP(paymentID, paymentResponse);
 
 dbms_output.put_line(
-   case
-      when P_RESP then 'TRUE'
-      else 'FALSE'
-   end
-);
-end;
+case
+when paymentResponse then 'TRUE'
+else 'FALSE'
+end);
+END;
 ```
 
 
@@ -166,8 +158,7 @@ DECLARE
 BEGIN
     DDCKPAY_SP(104, 20, OUTPUT);
     DBMS_OUTPUT.PUT_LINE(OUTPUT);
-END;
-
+    END;
 ```
 
 
